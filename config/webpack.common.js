@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const sveltePreprocess = require('svelte-preprocess');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
@@ -100,8 +99,11 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+
     new HtmlWebPackPlugin({
       template: resolvePath('public/index.html'),
+      inlineSource: '.(js|css|pcss)$',
     }),
+    new HtmlWebpackInlineSourcePlugin(HtmlWebPackPlugin),
   ],
 };
