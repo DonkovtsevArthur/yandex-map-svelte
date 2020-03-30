@@ -8,11 +8,14 @@
     "start": "webpack-dev-server --config ./config/webpack.dev.js --color",
     "build": "webpack --config ./config/webpack.prod.js",
     "eslint": "node node_modules/eslint/bin/eslint.js src",
-    "prettier": "prettier --write '*.js'"
+    "prettier": "prettier --write '*.{js, svelte}'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "svelte": "^3.20.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
@@ -34,6 +37,7 @@
     "postcss": "^7.0.27",
     "postcss-advanced-variables": "^3.0.1",
     "postcss-import": "^12.0.1",
+    "postcss-load-config": "^2.1.0",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.1",
     "postcss-nested-ancestors": "^2.0.0",
@@ -41,6 +45,8 @@
     "postcss-simple-vars": "^5.0.2",
     "prettier": "^2.0.2",
     "style-loader": "^1.1.3",
+    "svelte-loader": "^2.13.6",
+    "svelte-preprocess": "^3.7.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
@@ -52,7 +58,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js": [
+    "src/**/*.{js, svelte}": [
       "prettier --write",
       "eslint --quiet"
     ]
