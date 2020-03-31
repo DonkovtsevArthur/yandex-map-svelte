@@ -1,5 +1,9 @@
 {
   "printWidth": 80,
   "singleQuote": true,
-  "tabWidth": 2
+  "tabWidth": 2,
+  "svelteSortOrder": "styles-scripts-markup",
+  "svelteStrictMode": true,
+  "svelteBracketNewLine": true,
+  "svelteAllowShorthand": false
 }
