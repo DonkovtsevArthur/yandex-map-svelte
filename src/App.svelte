@@ -1,9 +1,15 @@
 <script>
-  let greet = {
-    message: 'Hello'
-  }
+  import NormalizeStyles from './normalize-styles.svelte';
+  import GlobalStyles from './global-styles.svelte';
+  
+
+  let greet = 'Hello';
+
 </script>
 
+
 <div>
-  <h1>{greet.message}</h1>
+  <NormalizeStyles />
+  <GlobalStyles />
+  <h1 class="title">{greet}</h1>
 </div>

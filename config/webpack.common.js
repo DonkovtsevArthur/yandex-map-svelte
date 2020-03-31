@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const sveltePreprocess = require('svelte-preprocess');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
@@ -12,10 +11,8 @@ const sveltePreprocessOptions = {
         '@babel/preset-env',
         {
           loose: true,
-          // No need for babel to resolve modules
           modules: false,
           targets: {
-            // ! Very important. Target es6+
             esmodules: true,
           },
         },
@@ -46,7 +43,7 @@ module.exports = {
           {
             loader: 'svelte-loader',
             options: {
-              hotReload: true,
+              hotReload: false,
               preprocess: sveltePreprocess(sveltePreprocessOptions),
             },
           },
@@ -93,15 +90,17 @@ module.exports = {
     mainFields: ['svelte', 'browser', 'module', 'main'],
     extensions: ['.mjs', '.js', '.svelte'],
     alias: {
-      // '@ui': resolvePath('src/ui'),
-      // '@lib': resolvePath('src/lib'),
+      '@ui': resolvePath('src/ui'),
       svelte: resolvePath('./node_modules/svelte'),
     },
   },
   plugins: [
     new CleanWebpackPlugin(),
+
     new HtmlWebPackPlugin({
       template: resolvePath('public/index.html'),
+      inlineSource: '.(js|css|pcss)$',
     }),
+    new HtmlWebpackInlineSourcePlugin(HtmlWebPackPlugin),
   ],
 };
