@@ -1,9 +1,12 @@
 <script>
   import NormalizeStyles from './normalize-styles.svelte';
   import GlobalStyles from './global-styles.svelte';
+  
 
   let greet = 'Hello';
+
 </script>
+
 
 <div>
   <NormalizeStyles />
