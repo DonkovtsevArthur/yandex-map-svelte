@@ -8,9 +8,18 @@
 </style>
 
 <script>
+  import { onMount } from 'svelte';
+
   import NormalizeStyles from './normalize-styles.svelte';
   import GlobalStyles from './global-styles.svelte';
   import Slider from './features/slider/slider.svelte';
+  import { dataReceived } from './model/index';
+  import data from '../data.json';
+  import './model/model.js';
+
+  onMount(() => {
+    dataReceived(data);
+  });
 </script>
 
 <div class="root-container">

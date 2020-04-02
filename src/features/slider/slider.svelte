@@ -62,13 +62,18 @@
   }
 </style>
 
+<script>
+  import { minAndMaxDates, selectedValue, valueChanged } from '../../model';
+</script>
+
 <label for="dates-range" class="dates-slider-container">
   <input
     class="dates-slider"
     type="range"
     id="dates-range"
-    min="1"
-    max="100"
-    value="50"
+    min="{$minAndMaxDates.minDate}"
+    max="{$minAndMaxDates.maxDate}"
+    value="{$selectedValue}"
+    on:change="{valueChanged}"
   />
 </label>

@@ -90,7 +90,6 @@ module.exports = {
     mainFields: ['svelte', 'browser', 'module', 'main'],
     extensions: ['.mjs', '.js', '.svelte'],
     alias: {
-      '@ui': resolvePath('src/ui'),
       svelte: resolvePath('./node_modules/svelte'),
     },
   },
