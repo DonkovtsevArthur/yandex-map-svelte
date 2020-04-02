@@ -81,10 +81,6 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader'],
       },
-      // {
-      //   test: /\.json$/,
-      //   loader: 'json-loader',
-      // },
     ],
   },
   node: {
@@ -94,8 +90,6 @@ module.exports = {
     mainFields: ['svelte', 'browser', 'module', 'main'],
     extensions: ['.mjs', '.js', '.svelte'],
     alias: {
-      '@features/*': resolvePath('src/features'),
-      '@model/*': resolvePath('src/model'),
       svelte: resolvePath('./node_modules/svelte'),
     },
   },
