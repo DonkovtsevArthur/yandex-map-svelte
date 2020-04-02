@@ -102,6 +102,10 @@
     text-transform: none;
   }
 
+  input[type='range']::-moz-focus-outer {
+    border: 0;
+  }
+
   button,
   [type='button'],
   [type='reset'],

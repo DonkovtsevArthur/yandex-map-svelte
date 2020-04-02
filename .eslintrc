@@ -1,4 +1,7 @@
 {
   "extends": ["kit/base", "kit/node"],
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "rules": {
+    "css-unused-selector": "off"
+  }
 }

@@ -1,4 +1,8 @@
 <style global>
+  * {
+    box-sizing: border-box;
+  }
+
   html,
   body {
     width: 100%;
@@ -6,6 +10,7 @@
   }
 
   :root {
+    --white: #ffffff;
     --red-100: #ffbcbc;
     --red-200: #ff6666;
     --red-300: #ff3333;

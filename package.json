@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "effector": "^20.13.4",
     "svelte": "^3.20.1"
   },
   "devDependencies": {
