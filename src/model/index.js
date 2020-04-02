@@ -1,4 +1,4 @@
-import { createStore, createEvent } from 'effector';
+import { createStore, createEvent, combine } from 'effector';
 
 export const data = createStore([]);
 export const minAndMaxDates = createStore({
@@ -7,6 +7,18 @@ export const minAndMaxDates = createStore({
 });
 export const selectedValue = createStore(0);
 export const dataToShow = createStore([]);
+
+export const sliderFillPercentage = combine(
+  minAndMaxDates,
+  selectedValue,
+  ({ minDate, maxDate }, selectedValue) => {
+    if (!minDate || !maxDate) {
+      return 0;
+    }
+
+    return (100 * (selectedValue - minDate)) / (maxDate - minDate);
+  }
+);
 
 export const dataReceived = createEvent();
 export const valueChanged = createEvent();
