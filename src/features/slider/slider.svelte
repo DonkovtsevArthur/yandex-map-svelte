@@ -4,7 +4,7 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    padding: 10px 5px;
+    padding: 15px 0;
     max-height: 44px;
   }
 
@@ -13,7 +13,6 @@
     height: 4px;
     -webkit-appearance: none;
     border-radius: 4px;
-    background: var(--black-08);
     outline: none;
     padding: 0;
     margin: 0;
@@ -63,7 +62,24 @@
 </style>
 
 <script>
-  import { minAndMaxDates, selectedValue, valueChanged } from '../../model';
+  import { onDestroy } from 'svelte';
+  import {
+    minAndMaxDates,
+    selectedValue,
+    valueChanged,
+    sliderFillPercentage
+  } from '../../model';
+
+  let sliderBg;
+
+  const unsubscribe = sliderFillPercentage.subscribe(percentage => {
+    sliderBg = `linear-gradient(90deg, var(--yellow-200) ${percentage}%, var(--black-08) ${percentage +
+      0.1}%)`;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
+  });
 </script>
 
 <label for="dates-range" class="dates-slider-container">
@@ -74,6 +90,7 @@
     min="{$minAndMaxDates.minDate}"
     max="{$minAndMaxDates.maxDate}"
     value="{$selectedValue}"
-    on:change="{valueChanged}"
+    on:input="{valueChanged}"
+    style="background: {sliderBg};"
   />
 </label>
