@@ -8,6 +8,9 @@ import {
   selectedValue,
   dataToShow,
   valueChanged,
+  debouncedChangeData,
+  dataChangedFx,
+  dataChanged,
 } from './index';
 
 const prependData = (data) =>
@@ -31,6 +34,9 @@ selectedValue
     valueChanged.map((e) => Number(e.target.value)),
     (_, newValue) => newValue
   );
+dataToShow.on(dataChanged, (_, data) => data);
+
+dataChangedFx.watch(debouncedChangeData);
 
 sample({
   source: data,
@@ -55,5 +61,5 @@ sample({
   source: data,
   clock: selectedValue,
   fn: (data, selectedValue) => data.filter(({ day }) => day <= selectedValue),
-  target: dataToShow,
+  target: dataChangedFx,
 });
