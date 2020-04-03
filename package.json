@@ -16,6 +16,7 @@
   "dependencies": {
     "dayjs": "^1.8.23",
     "effector": "^20.13.4",
+    "just-debounce-it": "^1.1.0",
     "svelte": "^3.20.1"
   },
   "devDependencies": {

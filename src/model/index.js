@@ -1,4 +1,5 @@
-import { createStore, createEvent, combine } from 'effector';
+import { createStore, createEvent, createEffect, combine } from 'effector';
+import debounce from 'just-debounce-it';
 
 export const data = createStore([]);
 export const minAndMaxDates = createStore({
@@ -22,3 +23,7 @@ export const sliderFillPercentage = combine(
 
 export const dataReceived = createEvent();
 export const valueChanged = createEvent();
+export const dataChanged = createEvent();
+export const debouncedChangeData = debounce(dataChanged, 300);
+
+export const dataChangedFx = createEffect({ handler: (data) => data });
