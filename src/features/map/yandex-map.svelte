@@ -32,13 +32,17 @@
       });
 
       const bounds = polygons.map(el => el.coordinates.flat(1)).flat(1);
-      const center = yandexMaps.util.bounds.fromPoints(bounds);
-      const centerAndZoom = yandexMaps.util.bounds.getCenterAndZoom(center, [
+      const centerBounds = yandexMaps.util.bounds.fromPoints(bounds);
+      const { center } = yandexMaps.util.bounds.getCenterAndZoom(centerBounds, [
         window.innerWidth,
         window.innerHeight
       ]);
 
-      map = new ymaps.Map('map', { ...centerAndZoom, controls: [] });
+      map = new ymaps.Map('map', {
+        center,
+        zoom: 10,
+        controls: ['zoomControl']
+      });
     });
   });
 
