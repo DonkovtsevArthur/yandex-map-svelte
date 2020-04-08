@@ -49,7 +49,8 @@
       transition: box-shadow 0.15s ease-in-out, border-width 0.15s, width 0.15s,
         height 0.15s;
       border-width: 0;
-      border: solid var(--white);
+      border-style: solid;
+      border-color: var(--white);
 
       &:active {
         box-shadow: 0px 2px 8px var(--black-16);

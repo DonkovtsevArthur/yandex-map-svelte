@@ -19,7 +19,7 @@ const prependData = (data) =>
     .map(({ day, coordinates, ...rest }) => {
       const enhanced = {
         ...rest,
-        day: dayjs(day).unix(),
+        day: dayjs(day).valueOf(),
         coordinates: JSON.parse(coordinates),
       };
 
@@ -34,6 +34,7 @@ selectedValue
     valueChanged.map((e) => Number(e.target.value)),
     (_, newValue) => newValue
   );
+
 dataToShow.on(dataChanged, (_, data) => data);
 
 dataChangedFx.watch(debouncedChangeData);

@@ -13,9 +13,7 @@ export const sliderFillPercentage = combine(
   minAndMaxDates,
   selectedValue,
   ({ minDate, maxDate }, selectedValue) => {
-    if (!minDate || !maxDate) {
-      return 0;
-    }
+    if (!minDate || !maxDate) return 0;
 
     return (100 * (selectedValue - minDate)) / (maxDate - minDate);
   }
@@ -24,6 +22,6 @@ export const sliderFillPercentage = combine(
 export const dataReceived = createEvent();
 export const valueChanged = createEvent();
 export const dataChanged = createEvent();
-export const debouncedChangeData = debounce(dataChanged, 50);
+export const debouncedChangeData = debounce(dataChanged, 300);
 
 export const dataChangedFx = createEffect({ handler: (data) => data });
