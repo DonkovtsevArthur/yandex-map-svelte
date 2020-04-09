@@ -2,16 +2,15 @@
   .yandex-map {
     width: 100%;
     flex: 1;
-    border-radius: 16px;
     overflow: hidden;
+    border-radius: 16px;
   }
 </style>
 
 <script>
-  import { onMount } from 'svelte';
-
-  import { dataToShow, data } from '../../model';
+  import { onMount, setContext } from 'svelte';
   import { initYandexMap } from '../../utils/mapInit';
+  import { dataToShow, data } from '../../model';
   import clusterIcon from '../../assets/icons/cluster_icon.png';
 
   let yandexMaps;
@@ -65,21 +64,11 @@
       );
 
       map = initYandexMap(yandexMaps, center);
-      // clusterer = new yandexMaps.Clusterer({
-      //   clusterIconContentLayout,
-      //   clusterIcons,
-      //   clusterDisableClickZoom: true,
-      //   minClusterSize: 3
-      // });
-
-      clusterer = new yandexMaps.ObjectManager({
-        clusterize: true,
-        // clusterHasBalloon: false,
-        // geoObjectOpenBalloonOnClick: false,
+      clusterer = new yandexMaps.Clusterer({
         clusterIconContentLayout,
         clusterIcons,
         clusterDisableClickZoom: true,
-        clusterMinClusterSize: 3
+        minClusterSize: 3
       });
 
       map.geoObjects.add(clusterer);
@@ -96,19 +85,15 @@
         const currentPolygonIsExist = map.geoObjects.indexOf(polygon) !== -1;
 
         if (currentPolygonIsVisible) {
-          // if (!currentPolygonIsExist) map.geoObjects.add(polygon);
-
+          if (!currentPolygonIsExist) map.geoObjects.add(polygon);
           clusterer.add(point);
         } else {
           if (currentPolygonIsExist) {
-            // map.geoObjects.remove(polygon);
+            map.geoObjects.remove(polygon);
             clusterer.remove(point);
           }
         }
       });
-
-      // clusterer.removeAll();
-      // clusterer.add(visiblePoints);
     }
   }
 </script>

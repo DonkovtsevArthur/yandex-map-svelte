@@ -1,28 +1,32 @@
-import { createStore, createEvent, createEffect, combine } from 'effector';
-import debounce from 'just-debounce-it';
+import { createStore, createEvent, createEffect } from 'effector';
+import { quartersDates } from '../utils/quarters-dates';
 
 export const data = createStore([]);
-export const minAndMaxDates = createStore({
-  minDate: null,
-  maxDate: null,
-});
-export const selectedValue = createStore(0);
+
+export const selectedValue = createStore(quartersDates.startOfYear);
 export const dataToShow = createStore([]);
 export const buildingsCount = data.map((state) => state.length);
-
-export const sliderFillPercentage = combine(
-  minAndMaxDates,
-  selectedValue,
-  ({ minDate, maxDate }, selectedValue) => {
-    if (!minDate || !maxDate) return 0;
-
-    return (100 * (selectedValue - minDate)) / (maxDate - minDate);
-  }
+export const quartersNewBuildings = createStore({
+  q1: 0,
+  q2: 0,
+  q3: 0,
+  q4: 0,
+});
+export const isFirstQuarter = selectedValue.map(
+  (state) => state > quartersDates.startOfYear
+);
+export const isSecondQuarter = selectedValue.map(
+  (state) => state > quartersDates.q1
+);
+export const isThirdQuarter = selectedValue.map(
+  (state) => state > quartersDates.q2
+);
+export const isFourthQuarter = selectedValue.map(
+  (state) => state > quartersDates.q3
 );
 
 export const dataReceived = createEvent();
 export const valueChanged = createEvent();
 export const dataChanged = createEvent();
-export const debouncedChangeData = debounce(dataChanged, 300);
 
 export const dataChangedFx = createEffect({ handler: (data) => data });

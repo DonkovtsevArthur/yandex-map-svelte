@@ -29,7 +29,6 @@
 
   import NormalizeStyles from './normalize-styles.svelte';
   import GlobalStyles from './global-styles.svelte';
-  import Slider from './features/slider/slider.svelte';
   import QuarterControl from './features/quarter-control/quarter-control.svelte';
   import YandexMap from './features/map/yandex-map.svelte';
   import { dataReceived, buildingsCount } from './model/index';

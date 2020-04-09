@@ -19,6 +19,10 @@
     font-size: 14px;
     line-height: 20px;
     padding: 6px 16px;
+    transition: background-color 0.15s ease-in-out;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 
     &:hover {
       background-color: var(--yellow-300);
@@ -31,31 +35,31 @@
     position: relative;
   }
 
-  .spacer.active::before {
-    position: absolute;
-    content: '';
-    right: -16px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    background-color: var(--yellow-200);
-  }
+  .spacer.active {
+    &::before,
+    &::after {
+      position: absolute;
+      content: '';
+      top: 0;
+      bottom: 0;
+      background-color: var(--yellow-200);
+    }
+    &::before {
+      left: 0;
+      right: -16px;
+    }
 
-  .spacer.active::after {
-    position: absolute;
-    content: '';
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: -16px;
-    background-color: var(--yellow-200);
+    &::after {
+      right: 0;
+      left: -16px;
+    }
   }
 
   .active {
     background-color: var(--yellow-200);
   }
 
-  .quarter-option__quarter {
+  .quarter-option__number {
     color: var(--black-100);
   }
 
@@ -64,24 +68,57 @@
   }
 </style>
 
+<script>
+  import {
+    valueChanged,
+    selectedValue,
+    quartersNewBuildings,
+    isFirstQuarter,
+    isSecondQuarter,
+    isThirdQuarter,
+    isFourthQuarter
+  } from '../../model';
+  import { quartersDates } from '../../utils/quarters-dates';
+
+  const { q1, q2, q3, q4 } = quartersDates;
+
+  const onChangeQuarter = quarterDate => () => valueChanged(quarterDate);
+</script>
+
 <div class="quarter-control-root">
-  <div class="quarter-option active">
-    <span class="quarter-option__quarter">1 квартал</span>
-    <span class="quarter-option__new-count">+ 406</span>
+  <div
+    class="quarter-option"
+    class:active="{$isFirstQuarter}"
+    on:click="{onChangeQuarter(q1)}"
+  >
+    <span class="quarter-option__number">1 квартал</span>
+    <span class="quarter-option__new-count">+{$quartersNewBuildings.q1}</span>
   </div>
-  <div class="spacer active"></div>
-  <div class="quarter-option active">
-    <span class="quarter-option__quarter">2 квартал</span>
-    <span class="quarter-option__new-count">+ 148</span>
+  <div class="spacer" class:active="{$isSecondQuarter}"></div>
+  <div
+    class="quarter-option"
+    class:active="{$isSecondQuarter}"
+    on:click="{onChangeQuarter(q2)}"
+  >
+    <span class="quarter-option__number">2 квартал</span>
+    <span class="quarter-option__new-count">+{$quartersNewBuildings.q2}</span>
   </div>
-  <div class="spacer active"></div>
-  <div class="quarter-option active">
-    <span class="quarter-option__quarter">3 квартал</span>
-    <span class="quarter-option__new-count">+ 205</span>
+  <div class="spacer" class:active="{$isThirdQuarter}"></div>
+  <div
+    class="quarter-option"
+    class:active="{$isThirdQuarter}"
+    on:click="{onChangeQuarter(q3)}"
+  >
+    <span class="quarter-option__number">3 квартал</span>
+    <span class="quarter-option__new-count">+{$quartersNewBuildings.q3}</span>
   </div>
-  <div class="spacer"></div>
-  <div class="quarter-option">
-    <span class="quarter-option__quarter">4 квартал</span>
-    <span class="quarter-option__new-count">+ 194</span>
+  <div class="spacer" class:active="{$isFourthQuarter}"></div>
+  <div
+    class="quarter-option"
+    class:active="{$isFourthQuarter}"
+    on:click="{onChangeQuarter(q4)}"
+  >
+    <span class="quarter-option__number">4 квартал</span>
+    <span class="quarter-option__new-count">+{$quartersNewBuildings.q4}</span>
   </div>
 </div>
