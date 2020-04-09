@@ -4,7 +4,7 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    padding: 15px 0;
+    padding: 16px 0;
     max-height: 44px;
   }
 

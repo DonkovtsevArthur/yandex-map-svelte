@@ -8,6 +8,7 @@ export const minAndMaxDates = createStore({
 });
 export const selectedValue = createStore(0);
 export const dataToShow = createStore([]);
+export const buildingsCount = data.map((state) => state.length);
 
 export const sliderFillPercentage = combine(
   minAndMaxDates,

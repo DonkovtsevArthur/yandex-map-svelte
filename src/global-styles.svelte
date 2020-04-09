@@ -52,5 +52,7 @@
     --black-12: rgba(0, 0, 0, 0.12);
     --black-08: rgba(0, 0, 0, 0.08);
     --black-04: rgba(0, 0, 0, 0.04);
+
+    --grey-100: #f5f5f5;
   }
 </style>
