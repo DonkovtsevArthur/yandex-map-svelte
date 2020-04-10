@@ -16,6 +16,7 @@ import {
   viewModeChanged,
 } from './index';
 
+//функция подготовки данных, в том числе описанию полигонов и пинов в том виде в котором их ждет ObjectManager
 const prependData = (data) =>
   data
     .filter(({ coordinates }) => coordinates && coordinates.length > 5)
@@ -61,6 +62,7 @@ selectedValue.on(valueChanged, (_, newValue) => newValue);
 dataToShow.on(dataChanged, (_, data) => data);
 isPolygonsMode.on(viewModeChanged, (_, newState) => newState);
 
+// здесь немножко костылей, мне было лень переписывать потом, подсчитываем количество жилый комплексов для того или иного квартала
 sample({
   source: data,
   clock: data,
@@ -92,6 +94,7 @@ sample({
   target: quartersNewBuildings,
 });
 
+// изменяем данных для отображения в зависимости от выбранного периода
 sample({
   source: data,
   clock: selectedValue,
