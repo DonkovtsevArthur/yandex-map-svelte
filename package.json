@@ -17,6 +17,7 @@
     "dayjs": "^1.8.23",
     "effector": "^20.13.4",
     "just-debounce-it": "^1.1.0",
+    "nanoid": "^3.0.2",
     "svelte": "^3.20.1"
   },
   "devDependencies": {

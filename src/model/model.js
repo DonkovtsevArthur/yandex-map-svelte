@@ -1,23 +1,54 @@
 import dayjs from 'dayjs';
 import { sample } from 'effector';
+import { nanoid } from 'nanoid';
 import { quartersDates } from '../utils/quarters-dates';
+import placemarkIcon from '../assets/icons/point_icon.png';
 
 import {
   data,
   dataReceived,
   selectedValue,
   dataToShow,
+  isPolygonsMode,
   valueChanged,
   quartersNewBuildings,
   dataChanged,
+  viewModeChanged,
 } from './index';
 
 const prependData = (data) =>
   data
     .filter(({ coordinates }) => coordinates && coordinates.length > 5)
     .map(({ day, coordinates, ...rest }) => {
+      const parsedCoordinates = JSON.parse(coordinates);
+
+      const point = {
+        id: nanoid(),
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: parsedCoordinates[0][0],
+        },
+        options: {
+          iconLayout: 'default#image',
+          iconImageHref: placemarkIcon,
+          iconImageSize: [10, 10],
+        },
+      };
+
+      const polygon = {
+        id: nanoid(),
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: parsedCoordinates,
+        },
+      };
+
       const enhanced = {
         ...rest,
+        point,
+        polygon,
         day: dayjs(day).valueOf(),
         coordinates: JSON.parse(coordinates),
       };
@@ -28,6 +59,7 @@ const prependData = (data) =>
 data.on(dataReceived.map(prependData), (_, data) => data);
 selectedValue.on(valueChanged, (_, newValue) => newValue);
 dataToShow.on(dataChanged, (_, data) => data);
+isPolygonsMode.on(viewModeChanged, (_, newState) => newState);
 
 sample({
   source: data,

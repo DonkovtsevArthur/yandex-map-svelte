@@ -6,6 +6,7 @@ export const data = createStore([]);
 export const selectedValue = createStore(quartersDates.startOfYear);
 export const dataToShow = createStore([]);
 export const buildingsCount = data.map((state) => state.length);
+export const isPolygonsMode = createStore(false);
 export const quartersNewBuildings = createStore({
   q1: 0,
   q2: 0,
@@ -28,5 +29,6 @@ export const isFourthQuarter = selectedValue.map(
 export const dataReceived = createEvent();
 export const valueChanged = createEvent();
 export const dataChanged = createEvent();
+export const viewModeChanged = createEvent();
 
 export const dataChangedFx = createEffect({ handler: (data) => data });

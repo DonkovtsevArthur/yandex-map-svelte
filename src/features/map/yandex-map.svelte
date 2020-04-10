@@ -10,8 +10,15 @@
 <script>
   import { onMount, setContext } from 'svelte';
   import { initYandexMap } from '../../utils/mapInit';
-  import { dataToShow, data } from '../../model';
+  import {
+    dataToShow,
+    data,
+    isPolygonsMode,
+    viewModeChanged
+  } from '../../model';
+  import { nanoid } from 'nanoid';
   import clusterIcon from '../../assets/icons/cluster_icon.png';
+  import placemarkIcon from '../../assets/icons/point_icon.png';
 
   let yandexMaps;
   let map;
@@ -31,32 +38,7 @@
     ymaps.ready(() => {
       yandexMaps = ymaps;
 
-      $data.forEach(geoObject => {
-        const point = new yandexMaps.Placemark(
-          geoObject.coordinates[0][0],
-          {},
-          {
-            iconLayout: '',
-            iconContentLayout: '<div></div>',
-            iconImageHref: ''
-          }
-        );
-
-        const polygon = new yandexMaps.GeoObject({
-          geometry: {
-            type: 'Polygon',
-            coordinates: geoObject.coordinates
-          }
-        });
-
-        polygons.push({
-          ...geoObject,
-          polygon,
-          point
-        });
-      });
-
-      const bounds = polygons.map(el => el.coordinates.flat(1)).flat(1);
+      const bounds = $data.map(el => el.coordinates.flat(1)).flat(1);
       const centerOfBounds = yandexMaps.util.bounds.fromPoints(bounds);
       const { center } = yandexMaps.util.bounds.getCenterAndZoom(
         centerOfBounds,
@@ -64,36 +46,45 @@
       );
 
       map = initYandexMap(yandexMaps, center);
-      clusterer = new yandexMaps.Clusterer({
+      clusterer = new yandexMaps.ObjectManager({
+        clusterHasBalloon: false,
+        geoObjectOpenBalloonOnClick: false,
         clusterIconContentLayout,
         clusterIcons,
         clusterDisableClickZoom: true,
-        minClusterSize: 3
+        minClusterSize: 3,
+        clusterize: true
       });
 
       map.geoObjects.add(clusterer);
+      map.events.add('boundschange', e => {
+        const oldZoom = e.get('oldZoom');
+        const newZoom = e.get('newZoom');
+
+        if (newZoom < 13 && oldZoom >= 13) {
+          viewModeChanged(false);
+          clusterer.options.set({ clusterize: true });
+        }
+
+        if (newZoom >= 13 && oldZoom < 13) {
+          viewModeChanged(true);
+          clusterer.options.set({ clusterize: false });
+        }
+      });
     });
   });
 
   $: {
-    if (map) {
+    if (clusterer) {
       let visiblePoints = [];
-      polygons.forEach(({ site_id, polygon, point }) => {
-        const currentPolygonIsVisible = $dataToShow.find(
-          el => el.site_id === site_id
-        );
-        const currentPolygonIsExist = map.geoObjects.indexOf(polygon) !== -1;
-
-        if (currentPolygonIsVisible) {
-          if (!currentPolygonIsExist) map.geoObjects.add(polygon);
-          clusterer.add(point);
-        } else {
-          if (currentPolygonIsExist) {
-            map.geoObjects.remove(polygon);
-            clusterer.remove(point);
-          }
-        }
+      let isPolygon = $isPolygonsMode;
+      $dataToShow.forEach(({ polygon, point }) => {
+        const target = isPolygon ? polygon : point;
+        visiblePoints.push(target);
       });
+
+      clusterer.removeAll();
+      clusterer.add({ type: 'FeatureCollection', features: visiblePoints });
     }
   }
 </script>
