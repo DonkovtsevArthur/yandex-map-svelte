@@ -3,6 +3,66 @@
     box-sizing: border-box;
   }
 
+  /* Пока пакет не вольется в Морду и Дзен, использовать шрифты из статики морды. */
+  @font-face {
+    font-family: 'YS Text';
+
+    /* src: url('freeze:link:./font/text-light.woff2') format('woff2'), */
+    /* url('freeze:link:./font/text-light.woff') format('woff'); */
+    src: url('//yastatic.net/s3/home/fonts/ys/1/text-light.woff2')
+        format('woff2'),
+      url('//yastatic.net/s3/home/fonts/ys/1/text-light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+  }
+
+  @font-face {
+    font-family: 'YS Text';
+
+    /* src: url('freeze:link:./font/text-regular.woff2') format('woff2'), */
+    /* url('freeze:link:./font/text-regular.woff') format('woff'); */
+    src: url('//yastatic.net/s3/home/fonts/ys/1/text-regular.woff2')
+        format('woff2'),
+      url('//yastatic.net/s3/home/fonts/ys/1/text-regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+  }
+
+  @font-face {
+    font-family: 'YS Text';
+
+    /* src: url('freeze:link:./font/text-medium.woff2') format('woff2'), */
+    /* url('freeze:link:./font/text-medium.woff') format('woff'); */
+    src: url('//yastatic.net/s3/home/fonts/ys/1/text-medium.woff2')
+        format('woff2'),
+      url('//yastatic.net/s3/home/fonts/ys/1/text-medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+  }
+
+  @font-face {
+    font-family: 'YS Text';
+
+    /* src: url('freeze:link:./font/text-bold.woff2') format('woff2'), */
+    /* url('freeze:link:./font/text-bold.woff') format('woff'); */
+    src: url('//yastatic.net/s3/home/fonts/ys/1/text-bold.woff2')
+        format('woff2'),
+      url('//yastatic.net/s3/home/fonts/ys/1/text-bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+  }
+
+  body {
+    font-family: 'YS Text', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-feature-settings: 'liga', 'kern';
+    -moz-font-feature-settings: 'liga', 'kern';
+    font-feature-settings: 'liga', 'kern';
+  }
+
   html,
   body {
     width: 100%;
@@ -52,5 +112,7 @@
     --black-12: rgba(0, 0, 0, 0.12);
     --black-08: rgba(0, 0, 0, 0.08);
     --black-04: rgba(0, 0, 0, 0.04);
+
+    --grey-100: #f5f5f5;
   }
 </style>
