@@ -7,10 +7,8 @@ import placemarkIcon from '../assets/icons/point_icon.png';
 import {
   data,
   dataReceived,
-  selectedValue,
   dataToShow,
   isPolygonsMode,
-  valueChanged,
   quartersNewBuildings,
   dataChanged,
   viewModeChanged,
@@ -28,7 +26,7 @@ const prependData = (data) =>
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: parsedCoordinates[0][0],
+          coordinates: parsedCoordinates[0],
         },
         options: {
           iconLayout: 'default#image',
@@ -42,7 +40,7 @@ const prependData = (data) =>
         type: 'Feature',
         geometry: {
           type: 'Polygon',
-          coordinates: parsedCoordinates,
+          coordinates: [parsedCoordinates],
         },
       };
 
@@ -51,14 +49,13 @@ const prependData = (data) =>
         point,
         polygon,
         day: dayjs(day).valueOf(),
-        coordinates: JSON.parse(coordinates),
+        coordinates: [parsedCoordinates],
       };
 
       return enhanced;
     });
 
 data.on(dataReceived.map(prependData), (_, data) => data);
-selectedValue.on(valueChanged, (_, newValue) => newValue);
 dataToShow.on(dataChanged, (_, data) => data);
 isPolygonsMode.on(viewModeChanged, (_, newState) => newState);
 
@@ -71,16 +68,16 @@ sample({
       (acc, { day: currentDate }) => {
         let result;
 
-        if (currentDate <= quartersDates.q1) {
+        if (currentDate <= quartersDates.q1.end) {
           result = { ...acc, q1: acc.q1 + 1 };
         } else if (
-          currentDate > quartersDates.q1 &&
-          currentDate <= quartersDates.q2
+          currentDate >= quartersDates.q2.start &&
+          currentDate <= quartersDates.q2.end
         ) {
           result = { ...acc, q2: acc.q2 + 1 };
         } else if (
-          currentDate > quartersDates.q2 &&
-          currentDate <= quartersDates.q3
+          currentDate > quartersDates.q3.start &&
+          currentDate <= quartersDates.q3.end
         ) {
           result = { ...acc, q3: acc.q3 + 1 };
         } else {
@@ -92,12 +89,4 @@ sample({
       { q1: 0, q2: 0, q3: 0, q4: 0 }
     ),
   target: quartersNewBuildings,
-});
-
-// изменяем данных для отображения в зависимости от выбранного периода
-sample({
-  source: data,
-  clock: selectedValue,
-  fn: (data, selectedValue) => data.filter(({ day }) => day <= selectedValue),
-  target: dataToShow,
 });

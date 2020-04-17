@@ -33,6 +33,7 @@
   import YandexMap from './features/map/yandex-map.svelte';
   import { dataReceived, buildingsCount } from './model/index';
   import data from '../data.json';
+  import './features/quarter-control/models/';
   import './model/model.js';
 
   onMount(() => {

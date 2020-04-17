@@ -69,20 +69,31 @@
 </style>
 
 <script>
+  import { onMount } from 'svelte';
   import {
     valueChanged,
     selectedValue,
-    quartersNewBuildings,
     isFirstQuarter,
     isSecondQuarter,
     isThirdQuarter,
     isFourthQuarter
-  } from '../../model';
-  import { quartersDates } from '../../utils/quarters-dates';
+  } from './models/';
+  import { quartersNewBuildings } from '../../model/index';
+  import { quartersDates, getTimeNow } from '../../utils/quarters-dates';
+
+  onMount(() => {
+    const nowTime = getTimeNow();
+    const quarterDate = Object.values(quartersDates).find(
+      ({ start, end }) => nowTime.start >= start && nowTime.end <= end
+    );
+    valueChanged(quarterDate);
+  });
 
   const { q1, q2, q3, q4 } = quartersDates;
 
-  const onChangeQuarter = quarterDate => () => valueChanged(quarterDate);
+  const onChangeQuarter = quarterDate => () => {
+    valueChanged(quarterDate);
+  };
 </script>
 
 <div class="quarter-control-root">
@@ -94,7 +105,10 @@
     <span class="quarter-option__number">1 квартал</span>
     <span class="quarter-option__new-count">+{$quartersNewBuildings.q1}</span>
   </div>
-  <div class="spacer" class:active="{$isSecondQuarter}"></div>
+  <div
+    class="spacer"
+    class:active="{$isFirstQuarter && $isSecondQuarter}"
+  ></div>
   <div
     class="quarter-option"
     class:active="{$isSecondQuarter}"
@@ -103,7 +117,10 @@
     <span class="quarter-option__number">2 квартал</span>
     <span class="quarter-option__new-count">+{$quartersNewBuildings.q2}</span>
   </div>
-  <div class="spacer" class:active="{$isThirdQuarter}"></div>
+  <div
+    class="spacer"
+    class:active="{$isSecondQuarter && $isThirdQuarter}"
+  ></div>
   <div
     class="quarter-option"
     class:active="{$isThirdQuarter}"
@@ -112,7 +129,10 @@
     <span class="quarter-option__number">3 квартал</span>
     <span class="quarter-option__new-count">+{$quartersNewBuildings.q3}</span>
   </div>
-  <div class="spacer" class:active="{$isFourthQuarter}"></div>
+  <div
+    class="spacer"
+    class:active="{$isThirdQuarter && $isFourthQuarter}"
+  ></div>
   <div
     class="quarter-option"
     class:active="{$isFourthQuarter}"
