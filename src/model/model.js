@@ -36,6 +36,7 @@ const prependData = (data) =>
         ...rest
       }) => {
         const parsedCoordinates = JSON.parse(coordinates);
+        console.log('parsedCoordinates', parsedCoordinates);
 
         const info = {
           name,
@@ -78,7 +79,7 @@ const prependData = (data) =>
             type: 'Polygon',
             coordinates: [parsedCoordinates],
           },
-          info,
+          //   info,
           properties: {
             // Контент метки.
             hintContent: name,

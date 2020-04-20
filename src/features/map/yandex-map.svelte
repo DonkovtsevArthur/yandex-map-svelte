@@ -78,7 +78,7 @@
 
             // инициализация ObjectManager который отвечает за отрисовку точек, полигонов, кластеров
             objectManager = new ymaps.ObjectManager({
-              clusterHasBalloon: true,
+              clusterHasBalloon: false,
               geoObjectOpenBalloonOnClick: false,
               clusterIconContentLayout,
               clusterIcons,
