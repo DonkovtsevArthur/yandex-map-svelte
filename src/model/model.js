@@ -18,42 +18,85 @@ import {
 const prependData = (data) =>
   data
     .filter(({ coordinates }) => coordinates && coordinates.length > 5)
-    .map(({ day, coordinates, ...rest }) => {
-      const parsedCoordinates = JSON.parse(coordinates);
+    .map(
+      ({
+        day,
+        coordinates,
+        name,
+        url,
+        main_photo,
+        description,
+        developer_name,
+        metro_line,
+        address,
+        mode_of_transport,
+        time_to_metro,
+        phases_count,
+        site_id,
+        ...rest
+      }) => {
+        const parsedCoordinates = JSON.parse(coordinates);
 
-      const point = {
-        id: nanoid(),
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: parsedCoordinates[0],
-        },
-        options: {
-          iconLayout: 'default#image',
-          iconImageHref: placemarkIcon,
-          iconImageSize: [10, 10],
-        },
-      };
+        const info = {
+          name,
+          url,
+          main_photo,
+          description,
+          developer_name,
+          metro_line,
+          address,
+          mode_of_transport,
+          time_to_metro,
+          day,
+          phases_count,
+        };
 
-      const polygon = {
-        id: nanoid(),
-        type: 'Feature',
-        geometry: {
-          type: 'Polygon',
+        const point = {
+          id: site_id,
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: parsedCoordinates[0],
+          },
+          properties: {
+            // Контент метки.
+            hintContent: name,
+          },
+          info,
+
+          options: {
+            iconLayout: 'default#image',
+            iconImageHref: placemarkIcon,
+            iconImageSize: [10, 10],
+          },
+        };
+
+        const polygon = {
+          id: site_id,
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [parsedCoordinates],
+          },
+          info,
+          properties: {
+            // Контент метки.
+            hintContent: name,
+          },
+        };
+
+        const enhanced = {
+          ...rest,
+          name,
+          point,
+          polygon,
+          day: dayjs(day).valueOf(),
           coordinates: [parsedCoordinates],
-        },
-      };
+        };
 
-      const enhanced = {
-        ...rest,
-        point,
-        polygon,
-        day: dayjs(day).valueOf(),
-        coordinates: [parsedCoordinates],
-      };
-
-      return enhanced;
-    });
+        return enhanced;
+      }
+    );
 
 data.on(dataReceived.map(prependData), (_, data) => data);
 dataToShow.on(dataChanged, (_, data) => data);

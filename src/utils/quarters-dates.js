@@ -1,4 +1,7 @@
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+
+const setMonthYear = (time) => dayjs(time).locale('ru').format('MMMM YYYY');
 
 const setDataQuarters = (start, end) => ({
   start: dayjs(start).valueOf(),
@@ -13,4 +16,4 @@ const quartersDates = {
   q4: setDataQuarters('2020-10-01', '2020-12-31'),
 };
 
-export { quartersDates, getTimeNow };
+export { quartersDates, getTimeNow, setMonthYear };

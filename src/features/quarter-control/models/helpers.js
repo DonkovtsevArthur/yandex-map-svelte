@@ -7,6 +7,8 @@ const setSelectedValues = (state, newValue) => {
 };
 
 const setFilterData = ({ data, selectedValue }) => {
+  console.log('setFilterData -> data', data);
+  console.log('setFilterData -> selectedValue', selectedValue);
   const newData = data.filter(({ day }) => {
     return selectedValue.some(({ start, end }) => {
       return day >= start && day <= end;
