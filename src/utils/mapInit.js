@@ -61,10 +61,30 @@ const layerVectorCustomization = [
   {
     types: 'polyline',
     tags: {
-      any: ['transit_schema', 'transit'],
+      any: ['transit_schema'],
     },
     stylers: {
       visibility: 'off',
+    },
+  },
+  {
+    types: 'point',
+    tags: {
+      any: ['transit'],
+    },
+    elements: 'label.text.fill',
+    stylers: {
+      color: '#3d3d3dff',
+    },
+  },
+  {
+    types: 'polyline',
+    tags: {
+      any: ['transit'],
+    },
+    elements: 'geometry',
+    stylers: {
+      opacity: 0.4,
     },
   },
   {
@@ -81,7 +101,10 @@ const layerVectorCustomization = [
     tags: {
       any: ['transit'],
     },
-    stylers: {},
+    stylers: {
+      zoom: [0, 12],
+      visibility: 'off',
+    },
   },
   {
     types: 'polyline',
@@ -218,6 +241,7 @@ const initYandexMap = (ymaps, coordinatesCenter) =>
     },
     {
       vector: true,
+      layerVectorMode: 'day',
       layerVectorCustomization,
     }
   );

@@ -26,8 +26,12 @@
   import { changeInfo } from './models/';
   import { loadYMapsApi } from './ymaps-load';
 
-  import clusterIcon from '../../assets/icons/cluster_icon.png';
-  import placemarkIcon from '../../assets/icons/point_icon.png';
+  import clusterIcon from '../../assets/icons/clusterIcon.svg';
+  import clusterIconActive from '../../assets/icons/clusterIconActive.svg';
+  import clusterIconViewed from '../../assets/icons/clusterIconViewed.svg';
+
+  import pointIconViewed from '../../assets/icons/pointViewed.svg';
+  import pointIconActive from '../../assets/icons/pointActive.svg';
 
   let map;
   let objectManager;
@@ -84,37 +88,167 @@
               clusterIcons,
               clusterDisableClickZoom: true,
               minClusterSize: 3,
-              clusterize: true
+              minZoom: 5,
+              clusterize: true,
+              icons: 'mega_cluster#icon'
             });
 
+            // привязка ObjectManager к текущей карте
             map.geoObjects.add(objectManager);
 
-            map.events.add('click', function(e) {
-              console.log('e', e);
-              isShowPopup = false;
-            });
+            const changePointIcon = ({ objectId, icon, objectManager }) => {
+              objectManager.objects.setObjectOptions(objectId, {
+                iconLayout: 'default#image',
+                iconImageHref: icon,
+                iconImageSize: [10, 10]
+              });
+            };
 
-            objectManager.objects.events.add('click', function(e) {
-              const objectId = e.get('objectId');
+            const changeClusterIcon = ({ clusterId, icon, objectManager }) => {
+              objectManager.clusters.setClusterOptions(clusterId, {
+                clusterIcons: [
+                  {
+                    href: icon,
+                    size: [45, 50],
+                    offset: [-22.5, -50]
+                  }
+                ]
+              });
+            };
 
-              const object = objectManager.objects.getById(objectId).info || {};
+            let lastClusterId;
+            let lastFeature = [];
+
+            // событие по кластеру
+            objectManager.clusters.events.add(['click'], function(e) {
+              const clusterId = e.get('objectId');
+              if (lastClusterId) {
+                changeClusterIcon({
+                  clusterId: lastClusterId,
+                  icon: clusterIconViewed,
+                  objectManager
+                });
+              }
+
+              if (lastObjectId) {
+                changePointIcon({
+                  objectId: lastObjectId,
+                  icon: pointIconViewed,
+                  objectManager
+                });
+              }
+              lastClusterId = clusterId;
+
+              const clusters = objectManager.clusters.getById(clusterId) || {};
+
+              const { features = [] } = clusters || {};
+
+              lastFeature = [...new Set([...lastFeature, features[0].id])];
+
+              const object = features[0].info || {};
+
+              const objects = clusters.properties.geoObjects;
+
+              changeClusterIcon({
+                clusterId,
+                icon: clusterIconActive,
+                objectManager
+              });
 
               changeInfo(object);
 
               isShowPopup = true;
-            }); // привязка ObjectManager к текущей карте
+            });
+
+            // событие на добавления кластера на карту
+            objectManager.clusters.events.add('add', function(e) {
+              const clusterId = e.get('objectId');
+              const cluster = objectManager.clusters.getById(clusterId);
+              const objects = cluster.properties.geoObjects;
+
+              if (
+                cluster.features.some(({ id }) =>
+                  lastFeature.some(el => el === id)
+                )
+              ) {
+                changeClusterIcon({
+                  clusterId,
+                  icon: clusterIconViewed,
+                  objectManager
+                });
+              }
+            });
+
+            let lastObjectId;
+
+            // событие по клику на point  на карте
+            objectManager.objects.events.add('click', function(e) {
+              const objectId = e.get('objectId');
+
+              if (lastClusterId) {
+                changeClusterIcon({
+                  clusterId: lastClusterId,
+                  icon: clusterIconViewed,
+                  objectManager
+                });
+              }
+
+              if (lastObjectId) {
+                changePointIcon({
+                  objectId: lastObjectId,
+                  icon: pointIconViewed,
+                  objectManager
+                });
+              }
+              lastObjectId = objectId;
+
+              changePointIcon({
+                objectId,
+                icon: pointIconActive,
+                objectManager
+              });
+
+              const object = objectManager.objects.getById(objectId).info || {};
+
+              changeInfo(object);
+              isShowPopup = true;
+            });
+
+            // событие клика по самой карте
+            map.events.add('click', function(e) {
+              if (lastClusterId) {
+                changeClusterIcon({
+                  clusterId: lastClusterId,
+                  icon: clusterIconViewed,
+                  objectManager
+                });
+              }
+
+              if (lastObjectId) {
+                changePointIcon({
+                  objectId: lastObjectId,
+                  icon: pointIconViewed,
+                  objectManager
+                });
+              }
+
+              isShowPopup = false;
+            });
 
             // добавляем событие реагирующее на изменение зума карты, т.к. при определенном зуме нам нужно показывать либо полигоны, либо пины
             map.events.add('boundschange', e => {
               const oldZoom = e.get('oldZoom');
               const newZoom = e.get('newZoom');
 
-              if (newZoom < 13 && oldZoom >= 13) {
+              if (
+                (newZoom < 13 && oldZoom >= 13) ||
+                (newZoom < 13 && oldZoom <= 13)
+              ) {
                 viewModeChanged(false);
                 objectManager.options.set({ clusterize: true });
               }
 
-              if (newZoom >= 13 && oldZoom < 13) {
+              if (newZoom >= 12 && oldZoom < 13) {
                 viewModeChanged(true);
                 objectManager.options.set({ clusterize: false });
               }

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { sample } from 'effector';
 import { nanoid } from 'nanoid';
 import { quartersDates } from '../utils/quarters-dates';
-import placemarkIcon from '../assets/icons/point_icon.png';
+import pointDefault from '../assets/icons/point.svg';
 
 import {
   data,
@@ -19,24 +19,26 @@ const prependData = (data) =>
   data
     .filter(({ coordinates }) => coordinates && coordinates.length > 5)
     .map(
-      ({
-        day,
-        coordinates,
-        name,
-        url,
-        main_photo,
-        description,
-        developer_name,
-        metro_line,
-        address,
-        mode_of_transport,
-        time_to_metro,
-        phases_count,
-        site_id,
-        ...rest
-      }) => {
+      (
+        {
+          day,
+          coordinates,
+          name,
+          url,
+          main_photo,
+          description,
+          developer_name,
+          metro_line,
+          address,
+          mode_of_transport,
+          time_to_metro,
+          phases_count,
+          site_id,
+          ...rest
+        },
+        i
+      ) => {
         const parsedCoordinates = JSON.parse(coordinates);
-        console.log('parsedCoordinates', parsedCoordinates);
 
         const info = {
           name,
@@ -50,6 +52,7 @@ const prependData = (data) =>
           time_to_metro,
           day,
           phases_count,
+          site_id,
         };
 
         const point = {
@@ -60,28 +63,26 @@ const prependData = (data) =>
             coordinates: parsedCoordinates[0],
           },
           properties: {
-            // Контент метки.
             hintContent: name,
           },
           info,
 
           options: {
             iconLayout: 'default#image',
-            iconImageHref: placemarkIcon,
+            iconImageHref: pointDefault,
             iconImageSize: [10, 10],
           },
         };
 
         const polygon = {
-          id: site_id,
+          id: nanoid(),
           type: 'Feature',
           geometry: {
             type: 'Polygon',
             coordinates: [parsedCoordinates],
           },
-          //   info,
+          info,
           properties: {
-            // Контент метки.
             hintContent: name,
           },
         };

@@ -44,7 +44,6 @@ export const loadYMapsApi = (options) => {
   }
 
   loadPromise = new Promise((resolve, reject) => {
-    console.log('loadYMapsApi -> resolve', resolve);
     // eslint-disable-next-line no-undef
     window[successCallbackName] = (ymaps) => {
       ymaps.modules.require('vectorEngine.VectorMapLayer', (VectorMapLayer) => {
@@ -55,7 +54,6 @@ export const loadYMapsApi = (options) => {
     };
 
     window[errorCallbackName] = (error) => {
-      console.log('loadYMapsApi -> error', error);
       reject(error);
       window[errorCallbackName] = null;
     };

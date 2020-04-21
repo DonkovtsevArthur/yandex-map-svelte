@@ -124,16 +124,26 @@
 <div class="yandex-popup">
   {#if $infoPopup.main_photo}
     <div class="yandex-popup-img">
-      <img
-        class="popup-image"
-        src="{`https:${$infoPopup.main_photo}`}"
-        alt="{$infoPopup.name || ''}"
-      />
+      <a href="https:{$infoPopup.url || 'yandex.ru'}" target="blank">
+        <img
+          class="popup-image"
+          src="{`https:${$infoPopup.main_photo}`}"
+          alt="{$infoPopup.name || ''}"
+        />
+      </a>
     </div>
   {/if}
   <div class="yandex-popup-info">
     {#if $infoPopup.name}
-      <h3 class="yandex-popup-title">{$infoPopup.name}</h3>
+      <h3 class="yandex-popup-title">
+        <a
+          class="yandex-popup-link"
+href="https:{$infoPopup.url || 'yandex.ru'}"
+          target="blank"
+        >
+          {$infoPopup.name}
+        </a>
+      </h3>
     {/if}
     {#if $infoPopup.developer_name}
       <p class="yandex-popup-text">{$infoPopup.developer_name}</p>
