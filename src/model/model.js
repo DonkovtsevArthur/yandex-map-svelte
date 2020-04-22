@@ -34,6 +34,7 @@ const prependData = (data) =>
           time_to_metro,
           phases_count,
           site_id,
+          building_site_name,
           ...rest
         },
         i
@@ -53,10 +54,12 @@ const prependData = (data) =>
           day,
           phases_count,
           site_id,
+          building_site_name,
         };
 
         const point = {
-          id: site_id,
+          id: nanoid(),
+          originalId: site_id + building_site_name,
           type: 'Feature',
           geometry: {
             type: 'Point',
@@ -76,6 +79,7 @@ const prependData = (data) =>
 
         const polygon = {
           id: nanoid(),
+          originalId: site_id + building_site_name,
           type: 'Feature',
           geometry: {
             type: 'Polygon',

@@ -1,8 +1,8 @@
 <style>
   .yandex-popup {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 60px;
+    right: 60px;
     z-index: 1;
     width: 286px;
     background: var(--white);
@@ -112,19 +112,22 @@
 
   let metroLine;
   let metroTime;
+  let realtyUrl;
 
   $: {
     metroLine = $infoPopup.metro_line ? `${$infoPopup.metro_line}, ` : '';
     metroTime = $infoPopup.time_to_metro
       ? `${$infoPopup.time_to_metro} мин.`
       : '';
+
+    realtyUrl = `https:${$infoPopup.url}?utm_source=spravochnik&utm_medium=article&utm_campaign=karta_novostroek`;
   }
 </script>
 
 <div class="yandex-popup">
   {#if $infoPopup.main_photo}
     <div class="yandex-popup-img">
-      <a href="https:{$infoPopup.url || 'yandex.ru'}" target="blank">
+      <a href="{realtyUrl}" target="blank">
         <img
           class="popup-image"
           src="{`https:${$infoPopup.main_photo}`}"
@@ -136,11 +139,7 @@
   <div class="yandex-popup-info">
     {#if $infoPopup.name}
       <h3 class="yandex-popup-title">
-        <a
-          class="yandex-popup-link"
-          href="https:{$infoPopup.url || 'yandex.ru'}"
-          target="blank"
-        >
+        <a class="yandex-popup-link" href="{realtyUrl}" target="blank">
           {$infoPopup.name}
         </a>
       </h3>
@@ -175,19 +174,13 @@
       </tr>
       <tr>
         <td>{$infoPopup.description || ''}</td>
-        <td>{$infoPopup.phases_count || ''}</td>
+        <td>{$infoPopup.building_site_name || ''}</td>
         <td class="delivery-time">{setMonthYear($infoPopup.day) || ''}</td>
       </tr>
     </table>
   </div>
   <div class="yandex-popup-footer">
-    <a
-      class="yandex-popup-link"
-      href="https:{$infoPopup.url || 'yandex.ru'}"
-      target="blank"
-    >
-      Подробнее
-    </a>
+    <a class="yandex-popup-link" href="{realtyUrl}" target="blank">Подробнее</a>
   </div>
 
 </div>
