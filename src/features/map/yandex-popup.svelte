@@ -138,7 +138,7 @@
       <h3 class="yandex-popup-title">
         <a
           class="yandex-popup-link"
-href="https:{$infoPopup.url || 'yandex.ru'}"
+          href="https:{$infoPopup.url || 'yandex.ru'}"
           target="blank"
         >
           {$infoPopup.name}

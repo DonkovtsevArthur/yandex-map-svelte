@@ -88,9 +88,7 @@
               clusterIcons,
               clusterDisableClickZoom: true,
               minClusterSize: 3,
-              minZoom: 5,
-              clusterize: true,
-              icons: 'mega_cluster#icon'
+              clusterize: true
             });
 
             // привязка ObjectManager к текущей карте
