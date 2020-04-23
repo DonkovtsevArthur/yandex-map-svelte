@@ -120,7 +120,7 @@
       ? `${$infoPopup.time_to_metro} мин.`
       : '';
 
-    realtyUrl = `https:${$infoPopup.url}?utm_source=spravochnik&utm_medium=article&utm_campaign=karta_novostroek`;
+    realtyUrl = `https://${$infoPopup.url}?utm_source=spravochnik&utm_medium=article&utm_campaign=karta_novostroek`;
   }
 </script>
 
@@ -168,13 +168,22 @@
     <div class="line"></div>
     <table class="yandex-popup-tablet">
       <tr>
-        <th class="tablet-title">Очередь</th>
-        <th class="tablet-title">Корпус</th>
+        {#if $infoPopup.description}
+          <th class="tablet-title">Очередь</th>
+        {/if}
+
+        {#if $infoPopup.building_site_name}
+          <th class="tablet-title">Корпус</th>
+        {/if}
         <th class="tablet-title ">Дата сдачи</th>
       </tr>
       <tr>
-        <td>{$infoPopup.description || ''}</td>
-        <td>{$infoPopup.building_site_name || ''}</td>
+        {#if $infoPopup.description}
+          <td>{$infoPopup.description}</td>
+        {/if}
+        {#if $infoPopup.building_site_name}
+          <td>{$infoPopup.building_site_name}</td>
+        {/if}
         <td class="delivery-time">{setMonthYear($infoPopup.day) || ''}</td>
       </tr>
     </table>

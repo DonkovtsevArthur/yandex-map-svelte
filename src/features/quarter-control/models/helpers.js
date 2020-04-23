@@ -6,14 +6,28 @@ const setSelectedValues = (state, newValue) => {
   return [...newState];
 };
 
-const setFilterData = ({ data, selectedValue }) => {
-  const newData = data.filter(({ day }) => {
-    return selectedValue.some(({ start, end }) => {
-      return day >= start && day <= end;
-    });
-  });
+const setFilterData = ({ quartersNewBuildings = {}, selectedValue }) => {
+  const d = Object.values(quartersNewBuildings);
 
-  return newData.length ? newData : data;
+  let newData = [];
+
+  if (selectedValue.length) {
+    d.forEach(({ key, builds }) => {
+      if (
+        selectedValue.some(({ start, end }) => {
+          return key.start >= start && key.end <= end;
+        })
+      ) {
+        newData.push(...builds);
+      }
+    });
+  } else {
+    d.forEach(({ builds }) => {
+      newData.push(...builds);
+    });
+  }
+
+  return newData;
 };
 
 export { setFilterData, setSelectedValues };

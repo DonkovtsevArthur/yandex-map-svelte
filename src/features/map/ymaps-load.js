@@ -34,7 +34,7 @@ const generateURL = (options) =>
   `https://api-maps.yandex.ru/${'2.1'}/?${qs.stringify({
     ...defaultOptions,
     ...options,
-  })}`;
+  })}&mode=debug`;
 
 let loadPromise;
 
