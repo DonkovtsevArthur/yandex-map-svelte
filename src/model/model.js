@@ -16,32 +16,27 @@ import {
 
 //функция подготовки данных, в том числе описанию полигонов и пинов в том виде в котором их ждет ObjectManager
 const prependData = (data) => {
-  console.log('prependData -> data', data);
   return (
     data
       // .filter(({ coordinates }) => coordinates && coordinates.length > 5)
       .map(
-        (
-          {
-            day,
-            coordinates,
-            name,
-            url,
-            main_photo,
-            description,
-            developer_name,
-            metro_line,
-            address,
-            mode_of_transport,
-            time_to_metro,
-            phases_count,
-            site_id,
-            building_site_name,
-            ...rest
-          },
-          i
-        ) => {
-          console.log('prependData -> data', data);
+        ({
+          day,
+          coordinates,
+          name,
+          url,
+          main_photo,
+          description,
+          developer_name,
+          metro_line,
+          address,
+          mode_of_transport,
+          time_to_metro,
+          phases_count,
+          site_id,
+          building_site_name,
+          ...rest
+        }) => {
           const parsedCoordinates = JSON.parse(coordinates);
 
           const newCoordinatesPoint = Array.isArray(parsedCoordinates[0])
@@ -185,6 +180,3 @@ sample({
     ),
   target: quartersNewBuildings,
 });
-
-quartersNewBuildings.watch((el) => console.log(el));
-data.watch((el) => console.log(el));

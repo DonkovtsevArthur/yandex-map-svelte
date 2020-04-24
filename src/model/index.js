@@ -17,8 +17,6 @@ export const quartersNewBuildings = createStore({
   q4: { key: {}, count: 0, builds: [] },
 });
 
-quartersNewBuildings.watch((el) => console.log(el));
-
 export const dataReceived = createEvent();
 export const dataChanged = createEvent();
 export const viewModeChanged = createEvent();
