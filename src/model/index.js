@@ -11,10 +11,10 @@ export const buildingsCount = data.map((state) => state.length);
 export const isPolygonsMode = createStore(false);
 // количество жилых комплексов которые будут сданы в тот или иной квартал (например: q1 - 1й квартал)
 export const quartersNewBuildings = createStore({
-  q1: 0,
-  q2: 0,
-  q3: 0,
-  q4: 0,
+  q1: { key: {}, count: 0, builds: [] },
+  q2: { key: {}, count: 0, builds: [] },
+  q3: { key: {}, count: 0, builds: [] },
+  q4: { key: {}, count: 0, builds: [] },
 });
 
 export const dataReceived = createEvent();

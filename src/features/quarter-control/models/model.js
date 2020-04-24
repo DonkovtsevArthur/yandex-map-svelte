@@ -1,7 +1,8 @@
 import { createStore, sample } from 'effector';
 import { quartersDates } from '../../../utils/quarters-dates';
 import { valueChanged } from './events';
-import { data, dataToShow } from '../../../model/index';
+import { data, dataToShow, quartersNewBuildings } from '../../../model/';
+
 import { setSelectedValues, setFilterData } from './helpers';
 
 //выбранная дата (по факту последний день того или иного квартала, либо начало года если это initial значение)
@@ -25,7 +26,7 @@ const isFourthQuarter = selectedValue.map((state) =>
 
 // изменяем данные для отображения в зависимости от выбранного периода
 sample({
-  source: { data, selectedValue },
+  source: { quartersNewBuildings, selectedValue },
   clock: selectedValue,
   fn: setFilterData,
   target: dataToShow,
@@ -33,8 +34,8 @@ sample({
 
 // изменяем данные для отображения в зависимости от исходного периода
 sample({
-  source: { data, selectedValue },
-  clock: data,
+  source: { quartersNewBuildings, selectedValue },
+  clock: quartersNewBuildings,
   fn: setFilterData,
   target: dataToShow,
 });

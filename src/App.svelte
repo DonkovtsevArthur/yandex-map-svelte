@@ -36,9 +36,33 @@
   import './features/quarter-control/models/';
   import './model/model.js';
 
+  let world;
+
+  function getWordLoad(count) {
+    let lastLetter = 'а';
+    const countBool = count % 100 < 10 || count % 100 > 20;
+
+    if (countBool && count % 10 === 1) {
+      lastLetter = '';
+    } else if (
+      countBool &&
+      (count % 10 === 0 || count % 10 === 2 || count % 10 === 3)
+    ) {
+      lastLetter = 'ов';
+    } else if (count % 10 < 10 && count % 10 > 1) {
+      lastLetter = 'ов';
+    }
+
+    return `${count} корпус${lastLetter}`;
+  }
+
   onMount(() => {
     dataReceived(data);
   });
+
+  $: {
+    world = getWordLoad($buildingsCount);
+  }
 </script>
 
 <div class="root-container">
@@ -46,9 +70,9 @@
   <GlobalStyles />
   <YandexMap />
   <div class="details-container">
-    <span class="details-info">
-      {$buildingsCount} очереди строительства в 2020 году
-    </span>
+    {#if world}
+      <span class="details-info">{world} в 2020 году</span>
+    {/if}
     <QuarterControl />
   </div>
 
