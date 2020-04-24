@@ -69,6 +69,16 @@
     height: 100%;
   }
 
+  h3,
+  p {
+    margin: 0;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
   :root {
     --white: #ffffff;
     --red-100: #ffbcbc;

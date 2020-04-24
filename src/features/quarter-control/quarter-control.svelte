@@ -103,7 +103,9 @@
     on:click="{onChangeQuarter(q1)}"
   >
     <span class="quarter-option__number">1 квартал</span>
-    <span class="quarter-option__new-count">+{$quartersNewBuildings.q1}</span>
+    <span class="quarter-option__new-count">
+      +{$quartersNewBuildings.q1.count}
+    </span>
   </div>
   <div
     class="spacer"
@@ -115,7 +117,9 @@
     on:click="{onChangeQuarter(q2)}"
   >
     <span class="quarter-option__number">2 квартал</span>
-    <span class="quarter-option__new-count">+{$quartersNewBuildings.q2}</span>
+    <span class="quarter-option__new-count">
+      +{$quartersNewBuildings.q2.count}
+    </span>
   </div>
   <div
     class="spacer"
@@ -127,7 +131,9 @@
     on:click="{onChangeQuarter(q3)}"
   >
     <span class="quarter-option__number">3 квартал</span>
-    <span class="quarter-option__new-count">+{$quartersNewBuildings.q3}</span>
+    <span class="quarter-option__new-count">
+      +{$quartersNewBuildings.q3.count}
+    </span>
   </div>
   <div
     class="spacer"
@@ -139,6 +145,8 @@
     on:click="{onChangeQuarter(q4)}"
   >
     <span class="quarter-option__number">4 квартал</span>
-    <span class="quarter-option__new-count">+{$quartersNewBuildings.q4}</span>
+    <span class="quarter-option__new-count">
+      +{$quartersNewBuildings.q4.count}
+    </span>
   </div>
 </div>
