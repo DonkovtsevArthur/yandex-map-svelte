@@ -2,6 +2,7 @@ const sveltePreprocess = require('svelte-preprocess');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { resolvePath } = require('./resolvePath');
 
 const sveltePreprocessOptions = {
@@ -74,8 +75,15 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ['file-loader'],
+        test: /\.(png|jp(e*)g|svg)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 8000,
+            name: 'images/[hash]-[name].[ext]',
+            publicPath: 'assets',
+          },
+        },
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -90,7 +98,6 @@ module.exports = {
     mainFields: ['svelte', 'browser', 'module', 'main'],
     extensions: ['.mjs', '.js', '.svelte'],
     alias: {
-      '@ui': resolvePath('src/ui'),
       svelte: resolvePath('./node_modules/svelte'),
     },
   },
@@ -102,5 +109,11 @@ module.exports = {
       inlineSource: '.(js|css|pcss)$',
     }),
     new HtmlWebpackInlineSourcePlugin(HtmlWebPackPlugin),
+
+    new OptimizeCssAssetsPlugin({
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }],
+      },
+    }),
   ],
 };
